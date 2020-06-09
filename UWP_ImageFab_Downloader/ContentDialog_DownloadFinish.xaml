@@ -13,19 +13,39 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
             <TextBlock Text="Download Complete" FontSize="20" FontWeight="Bold" Margin="0,0,0,8" 
                        HorizontalAlignment="Center"/>
             <TextBlock IsTextSelectionEnabled="True" x:Name="TextBlock_Result" FontSize="16" Margin="0,12"
                        Text="{x:Bind ResutText}" Grid.Row="1"/>
         <Grid BorderThickness="1" BorderBrush="{ThemeResource AppBarItemForegroundThemeBrush}" Margin="0,12,0,0" 
-                        x:Name="Grid_FailList" Grid.Row="2">
+                        x:Name="Grid_AlbumFailList" Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBlock Text="Fail List" FontSize="16"/>
+            <TextBlock Text="Albums Fail To Download" FontSize="16"/>
+            <!--<TextBlock Text="Albums fail to download." FontSize="12"
+                       Grid.Row="1"/>-->
+            <ListView ItemsSource="{x:Bind InvalidAlbums}" Grid.Row="2" SelectionMode="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:Album">
+                        <TextBlock Text="{x:Bind AlbumUrlUserInput}" IsTextSelectionEnabled="True"
+                                             HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+        <Grid BorderThickness="1" BorderBrush="{ThemeResource AppBarItemForegroundThemeBrush}" Margin="0,12,0,0" 
+                        x:Name="Grid_FailList" Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Images Fail To Download" FontSize="16"/>
             <TextBlock Text="You can click the link to check the fail picture on web" FontSize="12"
                        Grid.Row="1"/>
             <ListView ItemsSource="{x:Bind PictureFailList}" Grid.Row="2">

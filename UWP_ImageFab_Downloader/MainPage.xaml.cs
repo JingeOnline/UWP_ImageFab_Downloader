@@ -508,6 +508,11 @@ namespace UWP_ImageFab_Downloader
             {
                 picNum++;
                 Picture picture = await findPictureInImagePage(album.AlbumName, picNum, imagePageUrl);
+                if (picture == null)
+                {
+                    PictureFailCollection.Add(picture);
+                    continue;
+                }
                 album.PictureList.Add(picture);
                 //让程序暂停，但已经开始的Task还是会完成下载。
                 while (IsPausing)
@@ -525,20 +530,28 @@ namespace UWP_ImageFab_Downloader
         //下载ImagePage页面，找到Image的url，返回Picture对象
         private async Task<Picture> findPictureInImagePage(string albumName, int picNum, string pageUrl)
         {
-            string html = await htmlDownloadAsync(pageUrl);
-            string pattern = @"https://cdn.imagefap.com/images/full[^\f\n\r\t\v>\u0022]*";
-            Match match = Regex.Match(html, pattern);
-            string imageUrl = match.ToString();
+            try
+            {
+                string html = await htmlDownloadAsync(pageUrl);
+                string pattern = @"https://cdn.imagefap.com/images/full[^\f\n\r\t\v>\u0022]*";
+                Match match = Regex.Match(html, pattern);
+                string imageUrl = match.ToString();
 
-            //查找图片的文件类型（gif,jpg,jpeg,png）
-            string patternFileExtention = "[.](gif|jpg|jpeg|png|bmp)";
-            string fileExtention = Regex.Match(imageUrl, patternFileExtention).ToString();
+                //查找图片的文件类型（gif,jpg,jpeg,png）
+                string patternFileExtention = "[.](gif|jpg|jpeg|png|bmp)";
+                string fileExtention = Regex.Match(imageUrl, patternFileExtention).ToString();
 
-            Picture picture = new Picture();
-            picture.PictureFileName = albumName + "_" + picNum + fileExtention;
-            picture.PictureUrl = imageUrl;
-            picture.PicturePageUrl = pageUrl;
-            return picture;
+                Picture picture = new Picture();
+                picture.PictureFileName = albumName + "_" + picNum + fileExtention;
+                picture.PictureUrl = imageUrl;
+                picture.PicturePageUrl = pageUrl;
+                return picture;
+            }
+            catch
+            {
+                return null;
+            }
+
         }
 
         //下载网页HTML文本

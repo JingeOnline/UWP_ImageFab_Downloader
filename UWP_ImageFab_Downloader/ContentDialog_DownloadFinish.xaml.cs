@@ -22,18 +22,23 @@ namespace UWP_ImageFab_Downloader
     {
         public ObservableCollection<Picture> PictureFailList { get; set; }
         public string ResutText { get; set; }
+        public ObservableCollection<Album> InvalidAlbums { get; set; }
+
 
         public ContentDialog_DownloadFinish(MainPage mainPage)
         {
             this.InitializeComponent();
             PictureFailList = mainPage.PictureFailCollection;
+            InvalidAlbums = mainPage.InvalidAlbums;
+
             ResutText = "Download images count: " + mainPage.DownloadImagesCount + "\n" +
     "Download images size: " + mainPage.DownloadImagesSize + "\n" +
-    "Fail to download images count: " + mainPage.PictureFailCollection.Count + "\n" +
-    "Invalid album URL count: " + mainPage.InvalidAlbums.Count;
-            Grid_FailList.Visibility = needShowFailList(PictureFailList.Count);
+    "Images fail to download: " + mainPage.PictureFailCollection.Count + "\n" +
+    "Albums fail to download: " + mainPage.InvalidAlbums.Count;
+            Grid_FailList.Visibility = needShow(PictureFailList.Count);
+            Grid_AlbumFailList.Visibility = needShow(InvalidAlbums.Count);
         }
-        public Visibility needShowFailList(int fail)
+        public Visibility needShow(int fail)
         {
             if (fail == 0)
             {
@@ -44,6 +49,7 @@ namespace UWP_ImageFab_Downloader
                 return Visibility.Visible;
             }
         }
+
 
     }
 }
