@@ -428,6 +428,11 @@ namespace UWP_ImageFab_Downloader
             try
             {
                 string htmlAlbumPage = await htmlDownloadAsync(url);
+                if (htmlAlbumPage == null)
+                {
+                    album.IsUrlValid = false;
+                    return album;
+                }
                 album.ImagePageUrlList = searchPageUrlInAlbumPage(htmlAlbumPage);
                 album.AlbumName = searchAlbumNameInAlbumPage(htmlAlbumPage);
                 return album;
@@ -552,7 +557,7 @@ namespace UWP_ImageFab_Downloader
                 }
                 catch (Exception ex)
                 {
-                    return string.Empty;
+                    return null;
                 }
             }
         }
