@@ -31,7 +31,7 @@ namespace UWP_ImageFab_Downloader
     "Download images size: " + mainPage.DownloadImagesSize + "\n" +
     "Fail to download images count: " + mainPage.PictureFailCollection.Count + "\n" +
     "Invalid album URL count: " + mainPage.InvalidAlbums.Count;
-            StackPanel_FailList.Visibility = needShowFailList(mainPage.PictureFailCollection.Count);
+            Grid_FailList.Visibility = needShowFailList(PictureFailList.Count);
         }
         public Visibility needShowFailList(int fail)
         {

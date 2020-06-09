@@ -18,11 +18,17 @@
                        HorizontalAlignment="Center"/>
             <TextBlock IsTextSelectionEnabled="True" x:Name="TextBlock_Result" FontSize="16" Margin="0,12"
                        Text="{x:Bind ResutText}" Grid.Row="1"/>
-        <StackPanel BorderThickness="1" BorderBrush="{ThemeResource AppBarItemForegroundThemeBrush}" Margin="0,12,0,0" 
-                        x:Name="StackPanel_FailList" Grid.Row="2">
+        <Grid BorderThickness="1" BorderBrush="{ThemeResource AppBarItemForegroundThemeBrush}" Margin="0,12,0,0" 
+                        x:Name="Grid_FailList" Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             <TextBlock Text="Fail List" FontSize="16"/>
-            <TextBlock Text="You can click the link to check the fail picture on web" FontSize="12"/>
-            <ListView ItemsSource="{x:Bind PictureFailList}">
+            <TextBlock Text="You can click the link to check the fail picture on web" FontSize="12"
+                       Grid.Row="1"/>
+            <ListView ItemsSource="{x:Bind PictureFailList}" Grid.Row="2">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:Picture">
                         <HyperlinkButton Content="{x:Bind PicturePageUrl}" NavigateUri="{x:Bind PicturePageUrl}"
@@ -30,6 +36,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        </StackPanel>
+        </Grid>
+
     </Grid>
 </ContentDialog>

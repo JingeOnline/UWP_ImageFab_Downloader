@@ -31,7 +31,7 @@ namespace UWP_ImageFab_Downloader
     public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
         //允许由于写入错误，而等待并重新执行的次数
-        private int tryReWrite=5;
+        private int tryReWrite = 5;
 
         //用户输入的URL
         private string urlInput;
@@ -560,10 +560,12 @@ namespace UWP_ImageFab_Downloader
         //下载图片并写入到本地
         private async void imageDownload(Picture picture, StorageFolder saveFolder)
         {
-            Uri uri = new System.Uri(picture.PictureUrl);
-            HttpClient client = new HttpClient();
+
             try
             {
+                Uri uri = new System.Uri(picture.PictureUrl);
+                HttpClient client = new HttpClient();
+
                 byte[] buffer = await client.GetByteArrayAsync(uri);
                 //创建新文件，如果该文件存在则自动在末尾追加一个Unique名称。
                 StorageFile file = await saveFolder.CreateFileAsync(picture.PictureFileName, options: CreationCollisionOption.GenerateUniqueName);
@@ -583,18 +585,25 @@ namespace UWP_ImageFab_Downloader
             }
             //处理由于文件写入失败而引发的异常，莫名其妙经常会出现
             //“The process cannot access the file because it is being used by another process.”的异常
-            catch (System.IO.FileLoadException e) when (tryReWrite>=0)
+            catch (System.IO.FileLoadException) when (tryReWrite >= 0)
             {
                 //PictureFailCollection.Add(picture);
                 await Task.Delay(1000);
                 tryReWrite--;
                 imageDownload(picture, saveFolder);
             }
-            catch(System.IO.FileLoadException e)
+            catch (System.IO.FileLoadException e)
             {
-                await new MessageDialog(picture.PictureFileName+ " occur an error.\n"+e.Message, "Exception").ShowAsync();
+                await new MessageDialog(picture.PictureFileName + " occur an error.\n" + e.Message, "Exception").ShowAsync();
             }
-
+            catch (System.UriFormatException)
+            {
+                PictureFailCollection.Add(picture);
+            }
+            catch (System.IO.IOException)
+            {
+                await new MessageDialog( "Your device is disconnected from Internet.","Exception").ShowAsync();
+            }
         }
 
 
