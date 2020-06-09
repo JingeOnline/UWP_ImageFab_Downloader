@@ -9,7 +9,7 @@
   <Identity
     Name="11763Jinge.ImageFabDownloader"
     Publisher="CN=780241D0-D5E7-4008-8A66-AA0A861A5C1A"
-    Version="1.0.0.0" />
+    Version="1.0.1.0" />
 
   <mp:PhoneIdentity PhoneProductId="abd95618-4e03-4483-9a99-1994bc5cd913" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
